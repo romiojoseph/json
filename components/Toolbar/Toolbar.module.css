@@ -1,0 +1,28 @@
+.toolbar {
+    padding: 12px 24px;
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--toolbar-border);
+    background: var(--toolbar-bg);
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: 1px solid var(--btn-border);
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: transparent;
+    color: inherit;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn:hover {
+    background: var(--row-hover-bg);
+    border-color: #1f6feb;
+}

@@ -1,0 +1,23 @@
+.emptyState {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    opacity: 0.7;
+    text-align: center;
+    margin: 24px;
+    transition: all 0.2s;
+}
+
+.emptyState p {
+    opacity: 0.7;
+}
+
+.emptyState.dragging {
+    background: var(--row-hover-bg);
+    border: 2px dashed #1f6feb;
+    border-radius: 8px;
+    opacity: 1;
+}
