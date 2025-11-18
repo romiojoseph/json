@@ -1,5 +1,3 @@
-// This file should be named app/utils.js
-
 // Utility: Get JSON skeleton structure
 export const getJsonSkeleton = (jsonObject, maxArrayItems = 1) => {
     if (jsonObject === null) return null;

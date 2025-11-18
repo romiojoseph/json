@@ -14,6 +14,10 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
 import { json2csv } from 'json-2-csv';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the GraphViewer to ensure it's a client-side component
+const GraphViewer = dynamic(() => import('../components/GraphViewer/GraphViewer'), { ssr: false });
 
 export default function Home() {
   const [jsonData, setJsonData] = useState(null);
@@ -26,6 +30,7 @@ export default function Home() {
   const [queryResult, setQueryResult] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState('');
+  const [activeView, setActiveView] = useState('tree'); // 'tree' or 'graph'
 
   const fileInputRef = useRef();
   const parentRef = useRef();
@@ -187,6 +192,8 @@ export default function Home() {
           onExportCsv={handleExportCsv}
           onDownloadJson={() => downloadFile(JSON.stringify(jsonData, null, 2), 'data.json')}
           onDownloadSkeleton={() => downloadFile(skeletonJsonString, 'skeleton.json')}
+          activeView={activeView}
+          onSetView={setActiveView}
         />
       )}
 
@@ -195,12 +202,17 @@ export default function Home() {
         onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
       >
         {jsonData ? (
-          <VirtualizedJsonViewer
-            parentRef={parentRef}
-            visibleRows={visibleRows}
-            onToggle={handleToggle}
-            onPathCopy={handlePathCopy}
-          />
+          <>
+            {activeView === 'tree' && (
+              <VirtualizedJsonViewer
+                parentRef={parentRef}
+                visibleRows={visibleRows}
+                onToggle={handleToggle}
+                onPathCopy={handlePathCopy}
+              />
+            )}
+            {activeView === 'graph' && <GraphViewer data={jsonData} />}
+          </>
         ) : (
           <EmptyState isDragging={isDragging} />
         )}
