@@ -9,16 +9,21 @@ import EmptyState from '../components/EmptyState/EmptyState';
 import Modal from '../components/Modal/Modal';
 import CopyToast from '../components/CopyToast/CopyToast';
 import styles from './page.module.css';
-import { Copy, DownloadSimple, X } from '@phosphor-icons/react';
+import { Copy, DownloadSimple, X, MagnifyingGlassPlus } from '@phosphor-icons/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { JSONPath } from 'jsonpath-plus';
+import { json2csv } from 'json-2-csv';
 
 export default function Home() {
   const [jsonData, setJsonData] = useState(null);
   const [nodes, setNodes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [copiedPath, setCopiedPath] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStructureModalOpen, setIsStructureModalOpen] = useState(false);
+  const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
+  const [jsonPathQuery, setJsonPathQuery] = useState('$..*');
+  const [queryResult, setQueryResult] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState('');
 
@@ -119,6 +124,32 @@ export default function Home() {
     URL.revokeObjectURL(url);
   }, []);
 
+  const handleJsonPathQuery = useCallback(() => {
+    if (!jsonData) return;
+    try {
+      const result = JSONPath({ path: jsonPathQuery, json: jsonData });
+      setQueryResult(result);
+    } catch (e) {
+      setQueryResult(`Error executing JSONPath query: ${e.message}`);
+    }
+  }, [jsonData, jsonPathQuery]);
+
+  const handleExportCsv = useCallback(async () => {
+    if (!jsonData) return;
+    try {
+      const csv = await json2csv(jsonData);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'export.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      alert(`Could not convert to CSV. This typically happens if the JSON is not an array of objects.\n\nError: ${e.message}`);
+    }
+  }, [jsonData]);
+
   useEffect(() => {
     const handleKeyboard = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'f') { e.preventDefault(); searchInputRef.current?.focus(); }
@@ -151,7 +182,9 @@ export default function Home() {
         <Toolbar
           onExpand={expandAll}
           onCollapse={collapseAll}
-          onGetStructure={() => setIsModalOpen(true)}
+          onGetStructure={() => setIsStructureModalOpen(true)}
+          onQuery={() => setIsQueryModalOpen(true)}
+          onExportCsv={handleExportCsv}
           onDownloadJson={() => downloadFile(JSON.stringify(jsonData, null, 2), 'data.json')}
           onDownloadSkeleton={() => downloadFile(skeletonJsonString, 'skeleton.json')}
         />
@@ -176,7 +209,7 @@ export default function Home() {
       <CopyToast text={copiedPath} />
 
       <Modal
-        isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}
+        isOpen={isStructureModalOpen} onClose={() => setIsStructureModalOpen(false)}
         title="JSON Structure Skeleton"
       >
         <div className={styles.modalActions}>
@@ -190,6 +223,32 @@ export default function Home() {
         <SyntaxHighlighter language="json" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '6px' }}>
           {skeletonJsonString}
         </SyntaxHighlighter>
+      </Modal>
+
+      <Modal
+        isOpen={isQueryModalOpen} onClose={() => { setIsQueryModalOpen(false); setQueryResult(null); }}
+        title="Query with JSONPath"
+      >
+        <div className={styles.queryContainer}>
+          <input
+            type="text"
+            className={styles.queryInput}
+            value={jsonPathQuery}
+            onChange={(e) => setJsonPathQuery(e.target.value)}
+            placeholder="Enter JSONPath query (e.g., $.store.book[*].author)"
+          />
+          <button className={styles.btnPrimary} onClick={handleJsonPathQuery}>
+            <MagnifyingGlassPlus size={16} /> Run Query
+          </button>
+        </div>
+        {queryResult && (
+          <div className={styles.resultsContainer}>
+            <h3>Results:</h3>
+            <SyntaxHighlighter language="json" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '6px' }}>
+              {JSON.stringify(queryResult, null, 2)}
+            </SyntaxHighlighter>
+          </div>
+        )}
       </Modal>
     </div>
   );
