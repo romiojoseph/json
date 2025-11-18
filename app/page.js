@@ -11,7 +11,7 @@ import CopyToast from '../components/CopyToast/CopyToast';
 import styles from './page.module.css';
 import { Copy, DownloadSimple, X, MagnifyingGlassPlus } from '@phosphor-icons/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
 import { json2csv } from 'json-2-csv';
 import dynamic from 'next/dynamic';
@@ -36,12 +36,12 @@ export default function Home() {
   const parentRef = useRef();
   const searchInputRef = useRef();
 
-  useEffect(() => {
-    if (jsonData) {
-      const newNodes = flattenJson(jsonData, [], 0, searchTerm);
-      setNodes(newNodes);
-    }
-  }, [jsonData, searchTerm]);
+  // Compute nodes when JSON is loaded or when the user searches.
+  // We avoid calling setState synchronously inside an effect by
+  // updating nodes at the time we load the JSON and when the
+  // search input changes (see below). This keeps `nodes` as
+  // mutable state for expand/collapse operations while avoiding
+  // cascading renders from an effect.
 
   const visibleRows = useMemo(() => getVisibleRows(nodes), [nodes]);
 
@@ -57,7 +57,10 @@ export default function Home() {
       try {
         const json = JSON.parse(event.target.result);
         setJsonData(json);
+        // reset search and initialize nodes right away to avoid
+        // updating nodes inside an effect
         setSearchTerm('');
+        setNodes(flattenJson(json, [], 0, ''));
       } catch (err) { setError('Invalid JSON file. Please check the file format.'); }
     };
     reader.onerror = () => { setError('Failed to read file. Please try again.'); };
@@ -168,7 +171,11 @@ export default function Home() {
     <div className={styles.appContainer}>
       <Header
         searchTerm={searchTerm}
-        onSearchChange={(e) => setSearchTerm(e.target.value)}
+        onSearchChange={(e) => {
+          const value = e.target.value;
+          setSearchTerm(value);
+          if (jsonData) setNodes(flattenJson(jsonData, [], 0, value));
+        }}
         onFileOpen={() => fileInputRef.current?.click()}
         searchInputRef={searchInputRef}
         hasData={!!jsonData}
@@ -232,7 +239,7 @@ export default function Home() {
             <DownloadSimple size={16} /> Download
           </button>
         </div>
-        <SyntaxHighlighter language="json" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '6px' }}>
+        <SyntaxHighlighter language="json" style={solarizedlight} customStyle={{ margin: 0, borderRadius: '6px' }}>
           {skeletonJsonString}
         </SyntaxHighlighter>
       </Modal>
@@ -256,7 +263,7 @@ export default function Home() {
         {queryResult && (
           <div className={styles.resultsContainer}>
             <h3>Results:</h3>
-            <SyntaxHighlighter language="json" style={vscDarkPlus} customStyle={{ margin: 0, borderRadius: '6px' }}>
+            <SyntaxHighlighter language="json" style={solarizedlight} customStyle={{ margin: 0, borderRadius: '6px' }}>
               {JSON.stringify(queryResult, null, 2)}
             </SyntaxHighlighter>
           </div>

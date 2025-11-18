@@ -217,17 +217,36 @@ export default function GraphViewer({ data }) {
 
         const root = d3.hierarchy(transformData(data));
         
-        // Collapse all nodes by default except root
-        root.descendants().forEach((d, i) => {
-            if (i > 0 && d.children) {
-                d._children = d.children;
-                d.children = null;
-            }
-        });
+        // Count total nodes to determine if we should collapse by default
+        const totalNodes = root.descendants().length;
+        const shouldCollapseByDefault = totalNodes > 50; // Collapse if more than 50 nodes
+        
+        if (shouldCollapseByDefault) {
+            // Collapse all nodes except root and its immediate children
+            root.descendants().forEach((d, i) => {
+                if (d.depth > 1 && d.children) {
+                    d._children = d.children;
+                    d.children = null;
+                }
+            });
+        }
         
         const treeLayout = d3.tree()
-            .nodeSize([160, 340])
-            .separation((a, b) => (a.parent === b.parent ? 1 : 1.4));
+            .nodeSize([180, 340])
+            .separation((a, b) => {
+                // More spacing between siblings, even more if they have many children
+                if (a.parent === b.parent) {
+                    const aChildren = (a.children || a._children || []).length;
+                    const bChildren = (b.children || b._children || []).length;
+                    const maxChildren = Math.max(aChildren, bChildren);
+                    
+                    // Increase spacing based on number of children
+                    if (maxChildren > 10) return 2.5;
+                    if (maxChildren > 5) return 2.0;
+                    return 1.5;
+                }
+                return 2.0; // More spacing between different branches
+            });
         
         treeLayout(root);
 
@@ -357,6 +376,43 @@ export default function GraphViewer({ data }) {
 
             nodeUpdate.transition(t)
                 .attr('transform', d => `translate(${d.y},${d.x})`);
+
+            // Update button state for existing nodes
+            nodeUpdate.each(function(d) {
+                const node = d3.select(this);
+                
+                // Update button circle class
+                node.select('.collapse-btn circle:nth-child(2)')
+                    .attr('class', d.children ? 'graph-btn-expanded' : 'graph-btn-collapsed');
+                
+                // Update button text
+                node.select('.collapse-btn text')
+                    .text(d.children ? '−' : '+');
+                
+                // Update/remove badge
+                node.selectAll('.graph-badge-bg, .graph-badge-text').remove();
+                
+                if (d._children) {
+                    const childCount = d._children.length;
+                    const badgeWidth = childCount > 9 ? 28 : 24;
+                    const cardWidth = 280;
+                    
+                    node.append('rect')
+                        .attr('class', 'graph-badge-bg')
+                        .attr('x', cardWidth - 56 - (badgeWidth - 24))
+                        .attr('y', -45)
+                        .attr('width', badgeWidth)
+                        .attr('height', 20)
+                        .attr('rx', 10);
+
+                    node.append('text')
+                        .attr('class', 'graph-badge-text')
+                        .attr('x', cardWidth - 44 - (badgeWidth - 24) / 2)
+                        .attr('y', -33)
+                        .attr('text-anchor', 'middle')
+                        .text(childCount);
+                }
+            });
 
             const nodeEnter = nodeUpdate.enter()
                 .append('g')

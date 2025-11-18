@@ -25,8 +25,6 @@ export default function Toolbar({
                 </button>
             </div>
 
-            <div className={styles.separator}></div>
-
             <button className={styles.btn} onClick={onExpand} disabled={activeView !== 'tree'}><ArrowsOutSimple size={16} /> Expand All</button>
             <button className={styles.btn} onClick={onCollapse} disabled={activeView !== 'tree'}><ArrowsInSimple size={16} /> Collapse All</button>
             <button className={styles.btn} onClick={onGetStructure}><TreeStructure size={16} /> View Structure</button>

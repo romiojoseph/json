@@ -1,25 +1,25 @@
 .toolbar {
-    padding: 12px 24px;
+    padding: 6px 16px 12px;
     display: flex;
+    justify-content: space-between;
     gap: 8px;
-    border-bottom: 1px solid var(--toolbar-border);
-    background: var(--toolbar-bg);
-    flex-wrap: wrap;
 }
 
 .btn {
     padding: 6px 12px;
-    border: 1px solid var(--btn-border);
-    border-radius: 6px;
-    font-size: 14px;
+    border: 1px solid var(--neutral-13);
+    background-color: var(--neutral-15);
+    border-radius: 100px;
+    font-size: var(--font-size-caption);
+    font-weight: 500;
     cursor: pointer;
-    background: transparent;
     color: inherit;
     transition: all 0.2s;
     white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 6px;
+    width: 100%;
 }
 
 .btn:hover {
@@ -32,10 +32,10 @@
 .viewToggle {
     display: flex;
     gap: 4px;
-    background-color: var(--header-bg);
+    border: 1px solid var(--neutral-13);
+    background-color: var(--neutral-15);
     padding: 4px;
-    border-radius: 6px;
-    border: 1px solid var(--btn-border);
+    border-radius: 100px;
 }
 
 .viewToggle .btn {
@@ -48,11 +48,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.separator {
-    width: 1px;
-    background-color: var(--btn-border);
-    margin: 0 8px;
-}
+
 
 .btn:disabled {
     opacity: 0.5;

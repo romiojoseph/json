@@ -4,6 +4,7 @@ import React from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import styles from './VirtualizedJsonViewer.module.css';
 import { buildPathString } from '../../app/utils'; // Updated import path
+import { CaretRight, CaretDown } from '@phosphor-icons/react';
 
 export default function VirtualizedJsonViewer({ visibleRows, parentRef, onToggle, onPathCopy }) {
     const rowVirtualizer = useVirtualizer({
@@ -38,11 +39,18 @@ export default function VirtualizedJsonViewer({ visibleRows, parentRef, onToggle
                         >
                             <span style={{ minWidth: `${row.depth * 20}px` }} /> {/* Indentation */}
                             {row.isObject && (
-                                <span className={styles.toggle} onClick={(e) => { e.stopPropagation(); onToggle(row.path); }}>
-                                    {row.isExpanded ? '▼' : '▶'}
+                                <span
+                                    className={styles.toggle}
+                                    onClick={(e) => { e.stopPropagation(); onToggle(row.path); }}
+                                >
+                                    {row.isExpanded ? (
+                                        <CaretDown size={12} weight="fill" />
+                                    ) : (
+                                        <CaretRight size={12} weight="fill" />
+                                    )}
                                 </span>
                             )}
-                            <span className={styles.key}>"{row.key}":</span>
+                            <span className={styles.key}>&quot;{row.key}&quot;:</span>
                             {row.isObject ? (
                                 <span className={styles.bracket}>{Array.isArray(row.value) ? '[' : '{'}</span>
                             ) : (

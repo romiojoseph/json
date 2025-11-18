@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './Header.module.css';
-import { MagnifyingGlass, File } from '@phosphor-icons/react';
+import { MagnifyingGlass, FileArrowUp } from '@phosphor-icons/react';
 
 export default function Header({
     searchTerm,
@@ -13,7 +13,7 @@ export default function Header({
 }) {
     return (
         <header className={styles.header}>
-            <h1>JSON Tree Viewer</h1>
+            <h1>Explore JSON</h1>
             <div className={styles.headerActions}>
                 <div className={styles.searchBox}>
                     <input
@@ -27,7 +27,7 @@ export default function Header({
                     <MagnifyingGlass size={16} className={styles.searchIcon} />
                 </div>
                 <button className={styles.btn} onClick={onFileOpen}>
-                    <File size={16} />
+                    <FileArrowUp size={16} weight="fill" />
                     <span>Open File</span>
                 </button>
             </div>
