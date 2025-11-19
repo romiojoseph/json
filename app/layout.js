@@ -28,7 +28,7 @@ export const metadata = {
     siteName: 'Open JSON',
     images: [
       {
-        url: '/json/social-image.png',
+        url: '/social-image.png',
         width: 1200,
         height: 630,
         alt: 'Open JSON - Explore your JSON Data Online',
@@ -41,7 +41,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Open JSON - Explore your JSON Data Online',
     description: 'Free online JSON viewer with tree and graph visualization, search, JSONPath queries, structure analysis and CSV export. Paste or upload JSON files instantly.',
-    images: ['/json/social-image.png'],
+    images: ['/social-image.png'],
   },
   icons: {
     icon: '/json/favicon.svg',
