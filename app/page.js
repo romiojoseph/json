@@ -84,7 +84,7 @@ export default function Home() {
     if (file) handleFileRead(file);
   }, [handleFileRead]);
 
-  const handleToggle = useCallback((path) => {
+  const handleToggle = useCallback((path, isRecursive = false) => {
     setNodes(prevNodes => {
       const newNodes = JSON.parse(JSON.stringify(prevNodes));
       let currentLevel = newNodes;
@@ -94,7 +94,22 @@ export default function Home() {
         if (nodeToUpdate) { currentLevel = nodeToUpdate.children; }
         else break;
       }
-      if (nodeToUpdate) { nodeToUpdate.isExpanded = !nodeToUpdate.isExpanded; }
+
+      if (nodeToUpdate) {
+        const newState = !nodeToUpdate.isExpanded;
+
+        if (isRecursive) {
+          const updateRecursive = (node, state) => {
+            node.isExpanded = state;
+            if (node.children) {
+              node.children.forEach(child => updateRecursive(child, state));
+            }
+          };
+          updateRecursive(nodeToUpdate, newState);
+        } else {
+          nodeToUpdate.isExpanded = newState;
+        }
+      }
       return newNodes;
     });
   }, []);

@@ -38,7 +38,7 @@ export default function VirtualizedJsonViewer({ visibleRows, parentRef, onToggle
                             {row.isObject && (
                                 <span
                                     className={styles.toggle}
-                                    onClick={(e) => { e.stopPropagation(); onToggle(row.path); }}
+                                    onClick={(e) => { e.stopPropagation(); onToggle(row.path, e.altKey); }}
                                 >
                                     {row.isExpanded ? (
                                         <CaretDown size={12} weight="fill" />
