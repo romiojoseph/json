@@ -10,7 +10,7 @@
 }
 
 .section {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .title {
@@ -39,15 +39,6 @@
     flex-direction: column;
 }
 
-.featureTitle {
-    font-size: var(--font-size-tagline);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 700;
-    color: var(--orange-active);
-    margin: 0 0 12px 0;
-}
-
 .featureList {
     list-style: none;
     padding: 0;
@@ -63,6 +54,15 @@
     padding-left: 20px;
     position: relative;
     line-height: 1.5;
+}
+
+.featureList li a {
+    color: var(--neutral-5);
+    text-decoration: none;
+}
+
+.featureList li a:hover {
+    text-decoration: underline;
 }
 
 .featureList li::before {

@@ -53,7 +53,7 @@
 }
 
 .bracket {
-    opacity: var(--bracket-opacity);
+    opacity: 0.7;
     flex-shrink: 0;
 }
 

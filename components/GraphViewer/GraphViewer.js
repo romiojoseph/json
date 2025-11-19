@@ -158,24 +158,29 @@ function createNodeCard(node, d) {
             .attr('class', 'collapse-btn')
             .style('cursor', 'pointer');
 
+        // Position the button group (keep it at top-right)
+        const btnX = cardWidth - 32;
+        const btnY = -cardHeight / 2 + 20;
+
         // Button shadow
         btnGroup.append('circle')
             .attr('class', 'graph-btn-shadow')
             .attr('r', 14)
-            .attr('cx', cardWidth - 32)
-            .attr('cy', -cardHeight / 2 + 20);
+            .attr('cx', btnX)
+            .attr('cy', btnY);
 
         btnGroup.append('circle')
             .attr('class', d.children ? 'graph-btn-expanded' : 'graph-btn-collapsed')
             .attr('r', 13)
-            .attr('cx', cardWidth - 32)
-            .attr('cy', -cardHeight / 2 + 20);
+            .attr('cx', btnX)
+            .attr('cy', btnY);
 
         btnGroup.append('text')
             .attr('class', 'graph-btn-text')
-            .attr('x', cardWidth - 32)
-            .attr('y', -cardHeight / 2 + 26)
+            .attr('x', btnX)
+            .attr('y', btnY)
             .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle') // This centers the text vertically within the circle
             .style('pointer-events', 'none')
             .text(d.children ? '−' : '+');
 
@@ -261,6 +266,9 @@ export default function GraphViewer({ data }) {
         const g = svg.append('g')
             .attr('transform', 'translate(150, 50)');
 
+        const linkGroup = g.append('g').attr('class', 'links-layer');
+        const nodeGroup = g.append('g').attr('class', 'nodes-layer');
+
         const zoom = d3.zoom()
             .scaleExtent([0.1, 3])
             .on('zoom', (event) => {
@@ -270,11 +278,11 @@ export default function GraphViewer({ data }) {
 
         function drawGraph() {
             // Clear and redraw
-            g.selectAll('.link').remove();
-            g.selectAll('.node').remove();
+            linkGroup.selectAll('.link').remove();
+            nodeGroup.selectAll('.node').remove();
 
             // Draw links with curve
-            g.selectAll('.link')
+            linkGroup.selectAll('.link')
                 .data(root.links())
                 .enter()
                 .append('path')
@@ -285,7 +293,7 @@ export default function GraphViewer({ data }) {
                 .attr('stroke-dasharray', '2,2');
 
             // Draw nodes
-            const nodes = g.selectAll('.node')
+            const nodes = nodeGroup.selectAll('.node')
                 .data(root.descendants())
                 .enter()
                 .append('g')
@@ -337,7 +345,7 @@ export default function GraphViewer({ data }) {
             const t = d3.transition().duration(500).ease(d3.easeCubicInOut);
 
             // Update links
-            const links = g.selectAll('.link')
+            const links = linkGroup.selectAll('.link')
                 .data(root.links(), d => d.target.data.id);
 
             links.exit()
@@ -365,7 +373,7 @@ export default function GraphViewer({ data }) {
                 .attr('opacity', 0.6);
 
             // Update nodes
-            const nodeUpdate = g.selectAll('.node')
+            const nodeUpdate = nodeGroup.selectAll('.node')
                 .data(root.descendants(), d => d.data.id);
 
             nodeUpdate.exit()

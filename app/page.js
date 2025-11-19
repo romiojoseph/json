@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
-import { getJsonSkeleton, flattenJson, getVisibleRows } from './utils';
+import { getJsonSkeleton, flattenJson, getVisibleRows, copyToClipboard } from './utils';
 import Header from '../components/Header/Header';
 import VirtualizedJsonViewer from '../components/VirtualizedJsonViewer/VirtualizedJsonViewer';
 import EmptyState from '../components/EmptyState/EmptyState';
@@ -155,19 +155,23 @@ export default function Home() {
     });
   }, []);
 
-  const handlePathCopy = useCallback((pathString) => {
+  const handlePathCopy = useCallback(async (pathString) => {
     if (!pathString) return;
-    navigator.clipboard.writeText(pathString);
-    setCopiedPath('Copied to clipboard');
-    setCopyCount(c => c + 1);
-    setTimeout(() => setCopiedPath(''), 2500);
+    const success = await copyToClipboard(pathString);
+    if (success) {
+      setCopiedPath('Copied to clipboard');
+      setCopyCount(c => c + 1);
+      setTimeout(() => setCopiedPath(''), 2500);
+    }
   }, []);
 
-  const handleCopyToClipboard = useCallback((text) => {
-    navigator.clipboard.writeText(text);
-    setCopiedPath('Copied to clipboard');
-    setCopyCount(c => c + 1);
-    setTimeout(() => setCopiedPath(''), 2500);
+  const handleCopyToClipboard = useCallback(async (text) => {
+    const success = await copyToClipboard(text);
+    if (success) {
+      setCopiedPath('Copied to clipboard');
+      setCopyCount(c => c + 1);
+      setTimeout(() => setCopiedPath(''), 2500);
+    }
   }, []);
 
   const expandAll = useCallback(() => {
@@ -295,10 +299,10 @@ export default function Home() {
       >
         <div className={styles.modalActions}>
           <button className={styles.btnPrimary} onClick={() => handleCopyToClipboard(skeletonJsonString)}>
-            <Copy size={16} /> Copy
+            <Copy size={16} weight="bold" /> Copy
           </button>
           <button className={styles.btn} onClick={() => downloadFile(skeletonJsonString, 'skeleton.json')}>
-            <DownloadSimple size={16} /> Download
+            <DownloadSimple size={16} weight="bold" /> Download
           </button>
         </div>
         <SyntaxHighlighter language="json" style={nightOwl} customStyle={{ margin: 0, borderRadius: '6px' }}>
@@ -319,7 +323,7 @@ export default function Home() {
             placeholder="Enter JSONPath query (e.g., $.store.book[*].author)"
           />
           <button className={styles.btnPrimary} onClick={handleJsonPathQuery}>
-            <MagnifyingGlassPlus size={16} /> Run Query
+            <MagnifyingGlassPlus size={16} /> Search
           </button>
         </div>
         {queryResult && (

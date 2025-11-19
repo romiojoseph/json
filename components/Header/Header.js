@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './Header.module.css';
-import { MagnifyingGlass, UploadSimple, Copy } from '@phosphor-icons/react';
+import { MagnifyingGlass, UploadSimple, ClipboardText } from '@phosphor-icons/react';
 import Toolbar from '../Toolbar/Toolbar';
 
 export default function Header({
@@ -47,7 +47,7 @@ export default function Header({
                         <span>Open File</span>
                     </button>
                     <button className={styles.btn} onClick={onPasteClick}>
-                        <Copy size={16} weight="bold" />
+                        <ClipboardText size={16} weight="bold" />
                         <span>Paste</span>
                     </button>
                 </div>

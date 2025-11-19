@@ -52,7 +52,6 @@
 
 .closeBtn:hover {
     opacity: 1;
-    background: var(--row-hover-bg);
 }
 
 .body {

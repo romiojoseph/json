@@ -17,17 +17,14 @@ export const metadata = {
   title: 'Open JSON - Explore your JSON Data Online',
   description: 'Free online JSON viewer with tree and graph visualization, search, JSONPath queries, structure analysis and CSV export. Paste or upload JSON files instantly.',
   keywords: 'json viewer, json visualizer, json tree, json graph, json formatter, json parser, json validator, jsonpath, json to csv, json analyzer',
-  authors: [{ name: 'JSON Viewer' }],
-  creator: 'JSON Viewer',
-  publisher: 'JSON Viewer',
-  metadataBase: new URL('https://your-domain.com'), // Update with your actual domain
+  metadataBase: new URL('https://romiojoseph.github.io/json/'),
   alternates: {
-    canonical: '/',
+    canonical: 'https://romiojoseph.github.io/json/',
   },
   openGraph: {
     title: 'Open JSON - Explore your JSON Data Online',
     description: 'Free online JSON viewer with tree and graph visualization, search, JSONPath queries, structure analysis and CSV export. Paste or upload JSON files instantly.',
-    url: 'https://your-domain.com', // Update with your actual domain
+    url: 'https://romiojoseph.github.io/json/',
     siteName: 'Open JSON',
     images: [
       {
@@ -51,13 +48,6 @@ export const metadata = {
     shortcut: '/favicon.svg',
     apple: '/favicon.svg',
   },
-  manifest: '/site.webmanifest',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
-  themeColor: '#ffffff',
   robots: {
     index: true,
     follow: true,
@@ -70,6 +60,13 @@ export const metadata = {
     },
   },
 };
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 
 export default function RootLayout({ children }) {
   return (

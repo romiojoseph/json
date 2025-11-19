@@ -56,12 +56,25 @@
 
 .btnPrimary {
   composes: btn;
-  background: var(--green-primary);
-  color: white;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--yellow-primary);
+  color: inherit;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-0);
+  font-weight: 600;
+  gap: 6px;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .btnPrimary:hover {
-  background: var(--green-hover);
+  background: var(--orange-primary);
 }
 
 .codeBlock {
@@ -71,11 +84,9 @@
   font-family: 'SF Mono', Monaco, monospace;
   font-size: 12px;
   line-height: 1.6;
-  background: var(--header-bg);
-  border: 1px solid var(--header-border);
+  background: var(--neutral-14);
+  border: 1px solid var(--neutral-13);
 }
-
-/* ... (keep all the previous styles) ... */
 
 .queryContainer {
   display: flex;
@@ -85,18 +96,26 @@
 
 .queryInput {
   flex-grow: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--input-border);
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: var(--font-mono);
-  background: var(--bg-color);
+  padding: 10px 12px;
+  border: 2px solid var(--neutral-14);
+  border-radius: 10px;
+  font-size: var(--font-size-caption);
+  width: 200px;
+  background: var(--neutral-16);
   color: inherit;
+  font-family: inherit;
+  outline: transparent;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.queryInput:hover {
+  border: 2px solid var(--neutral-13);
+  background-color: var(--neutral-15);
 }
 
 .queryInput:focus {
-  outline: 2px solid #1f6feb;
-  border-color: transparent;
+  border: 2px solid var(--orange-primary);
+  background-color: var(--neutral-16);
 }
 
 .resultsContainer {
