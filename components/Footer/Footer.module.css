@@ -31,7 +31,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 32px;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
 .featureColumn {
@@ -86,17 +86,14 @@
     text-align: left;
 }
 
-@media (max-width: 768px) {
-    .footer {
-        padding: 32px 16px 16px;
+@media (max-width: 600px) {
+    .featureList {
+        grid-template-columns: 1fr 1fr;
     }
+}
 
-    .features {
+@media (max-width: 400px) {
+    .featureList {
         grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .title {
-        font-size: var(--font-size-heading5);
     }
 }

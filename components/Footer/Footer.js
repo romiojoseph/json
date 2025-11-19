@@ -24,6 +24,7 @@ export default function Footer() {
                             <li>Syntax highlighting</li>
                             <li>JSON structure skeleton generation</li>
                             <li>CSV export</li>
+                            <li>Convert CSV to JSON (Experimental)</li>
                             <li>Paste or Drag & drop file</li>
                             <li>Deep nested value search</li>
                             <li>JSONPath query support</li>

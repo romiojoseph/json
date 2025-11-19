@@ -30,11 +30,13 @@
     font-size: var(--font-size-heading5);
     font-weight: 600;
     color: var(--neutral-0);
+    text-align: center;
 }
 
 .emptyState p {
     margin: 0;
     font-size: var(--font-size-caption);
+    text-align: center;
 }
 
 .pasteBtn {

@@ -19,6 +19,7 @@ export const getJsonSkeleton = (jsonObject, maxArrayItems = 1) => {
             if (Object.prototype.hasOwnProperty.call(jsonObject, key)) {
                 const value = jsonObject[key];
                 if (value === null) skeleton[key] = null;
+                else if (value instanceof Date) skeleton[key] = value.toISOString();
                 else if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
                     skeleton[key] = getJsonSkeleton(value, maxArrayItems);
                 } else if (typeof value === 'boolean') skeleton[key] = "<boolean>";
@@ -51,7 +52,7 @@ export const flattenJson = (json, path = [], depth = 0, searchTerm = '') => {
     Object.keys(json).forEach(key => {
         const value = json[key];
         const newPath = [...path, key];
-        const isObject = typeof value === 'object' && value !== null;
+        const isObject = typeof value === 'object' && value !== null && !(value instanceof Date);
         const valueString = isObject ? '' : String(value);
         const matchesSearch = !searchTerm ||
             key.toLowerCase().includes(searchTerm.toLowerCase()) ||

@@ -102,3 +102,22 @@
 .btn:hover {
     background: var(--orange-primary);
 }
+
+@media (max-width: 600px) {
+    .topRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .btn,
+    .searchBox input,
+    .headerActions {
+        width: 100%;
+        flex: 1;
+    }
+
+    .headerActions {
+        flex-wrap: nowrap;
+    }
+}

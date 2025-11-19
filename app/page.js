@@ -15,6 +15,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nightOwl } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
 import { json2csv } from 'json-2-csv';
+import Papa from 'papaparse';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the GraphViewer to ensure it's a client-side component
@@ -58,13 +59,44 @@ export default function Home() {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const json = JSON.parse(event.target.result);
+        const content = event.target.result;
+        let json;
+
+        if (file.name.endsWith('.csv') || file.type === 'text/csv' || file.type === 'application/vnd.ms-excel') {
+          const result = Papa.parse(content, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            transform: (value) => {
+              try {
+                if (typeof value === 'string' && (value.trim().startsWith('{') || value.trim().startsWith('['))) {
+                  return JSON.parse(value);
+                }
+              } catch (e) { /* ignore */ }
+              return value;
+            }
+          });
+
+          if (result.errors.length > 0) {
+            console.warn('CSV Parsing Errors:', result.errors);
+            if (!result.data || result.data.length === 0) {
+              throw new Error('Error parsing CSV: ' + result.errors[0].message);
+            }
+          }
+          json = result.data;
+        } else {
+          json = JSON.parse(content);
+        }
+
         setJsonData(json);
         // reset search and initialize nodes right away to avoid
         // updating nodes inside an effect
         setSearchTerm('');
         setNodes(flattenJson(json, [], 0, ''));
-      } catch (err) { setError('Invalid JSON file. Please check the file format.'); }
+      } catch (err) {
+        console.error(err);
+        setError(err.message || 'Invalid file format. Please check the file.');
+      }
     };
     reader.onerror = () => { setError('Failed to read file. Please try again.'); };
     reader.readAsText(file);
@@ -80,9 +112,9 @@ export default function Home() {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file && file.type === 'application/json') {
+    if (file && (file.type === 'application/json' || file.type === 'text/csv' || file.name.endsWith('.csv'))) {
       handleFileRead(file);
-    } else { setError('Please drop a valid JSON file.'); }
+    } else { setError('Please drop a valid JSON or CSV file.'); }
   }, [handleFileRead]);
 
   const handleDragOver = useCallback((e) => { e.preventDefault(); setIsDragging(true); }, []);
@@ -223,7 +255,7 @@ export default function Home() {
 
       <input
         ref={fileInputRef} type="file"
-        accept="application/json,.json"
+        accept="application/json,.json,.csv,text/csv"
         onChange={handleFileSelect}
         style={{ display: 'none' }}
       />
