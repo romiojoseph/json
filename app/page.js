@@ -3,7 +3,6 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { getJsonSkeleton, flattenJson, getVisibleRows } from './utils';
 import Header from '../components/Header/Header';
-import Toolbar from '../components/Toolbar/Toolbar';
 import VirtualizedJsonViewer from '../components/VirtualizedJsonViewer/VirtualizedJsonViewer';
 import EmptyState from '../components/EmptyState/EmptyState';
 import Modal from '../components/Modal/Modal';
@@ -11,7 +10,7 @@ import CopyToast from '../components/CopyToast/CopyToast';
 import styles from './page.module.css';
 import { Copy, DownloadSimple, X, MagnifyingGlassPlus } from '@phosphor-icons/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
 import { json2csv } from 'json-2-csv';
 import dynamic from 'next/dynamic';
@@ -24,6 +23,7 @@ export default function Home() {
   const [nodes, setNodes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [copiedPath, setCopiedPath] = useState('');
+  const [copyCount, setCopyCount] = useState(0);
   const [isStructureModalOpen, setIsStructureModalOpen] = useState(false);
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
   const [jsonPathQuery, setJsonPathQuery] = useState('$..*');
@@ -102,11 +102,17 @@ export default function Home() {
   const handlePathCopy = useCallback((pathString) => {
     if (!pathString) return;
     navigator.clipboard.writeText(pathString);
-    setCopiedPath(pathString);
+    setCopiedPath('Copied to clipboard');
+    setCopyCount(c => c + 1);
     setTimeout(() => setCopiedPath(''), 2500);
   }, []);
 
-  const handleCopyToClipboard = useCallback((text) => navigator.clipboard.writeText(text), []);
+  const handleCopyToClipboard = useCallback((text) => {
+    navigator.clipboard.writeText(text);
+    setCopiedPath('Copied to clipboard');
+    setCopyCount(c => c + 1);
+    setTimeout(() => setCopiedPath(''), 2500);
+  }, []);
 
   const expandAll = useCallback(() => {
     setNodes(prevNodes => {
@@ -179,6 +185,15 @@ export default function Home() {
         onFileOpen={() => fileInputRef.current?.click()}
         searchInputRef={searchInputRef}
         hasData={!!jsonData}
+        onExpand={expandAll}
+        onCollapse={collapseAll}
+        onGetStructure={() => setIsStructureModalOpen(true)}
+        onQuery={() => setIsQueryModalOpen(true)}
+        onExportCsv={handleExportCsv}
+        onDownloadJson={() => downloadFile(JSON.stringify(jsonData, null, 2), 'data.json')}
+        onDownloadSkeleton={() => downloadFile(skeletonJsonString, 'skeleton.json')}
+        activeView={activeView}
+        onSetView={setActiveView}
       />
 
       <input
@@ -189,20 +204,6 @@ export default function Home() {
       />
 
       {error && <div className={styles.errorMessage}><X size={16} /> {error}</div>}
-
-      {jsonData && (
-        <Toolbar
-          onExpand={expandAll}
-          onCollapse={collapseAll}
-          onGetStructure={() => setIsStructureModalOpen(true)}
-          onQuery={() => setIsQueryModalOpen(true)}
-          onExportCsv={handleExportCsv}
-          onDownloadJson={() => downloadFile(JSON.stringify(jsonData, null, 2), 'data.json')}
-          onDownloadSkeleton={() => downloadFile(skeletonJsonString, 'skeleton.json')}
-          activeView={activeView}
-          onSetView={setActiveView}
-        />
-      )}
 
       <main
         className={styles.mainContent}
@@ -225,7 +226,7 @@ export default function Home() {
         )}
       </main>
 
-      <CopyToast text={copiedPath} />
+      <CopyToast key={copyCount} text={copiedPath} />
 
       <Modal
         isOpen={isStructureModalOpen} onClose={() => setIsStructureModalOpen(false)}
@@ -239,7 +240,7 @@ export default function Home() {
             <DownloadSimple size={16} /> Download
           </button>
         </div>
-        <SyntaxHighlighter language="json" style={solarizedlight} customStyle={{ margin: 0, borderRadius: '6px' }}>
+        <SyntaxHighlighter language="json" style={atomDark} customStyle={{ margin: 0, borderRadius: '6px' }}>
           {skeletonJsonString}
         </SyntaxHighlighter>
       </Modal>
@@ -263,7 +264,7 @@ export default function Home() {
         {queryResult && (
           <div className={styles.resultsContainer}>
             <h3>Results:</h3>
-            <SyntaxHighlighter language="json" style={solarizedlight} customStyle={{ margin: 0, borderRadius: '6px' }}>
+            <SyntaxHighlighter language="json" style={atomDark} customStyle={{ margin: 0, borderRadius: '6px' }}>
               {JSON.stringify(queryResult, null, 2)}
             </SyntaxHighlighter>
           </div>

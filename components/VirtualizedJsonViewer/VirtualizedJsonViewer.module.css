@@ -10,7 +10,7 @@
     align-items: flex-start;
     gap: 2px;
     padding: 4px 0;
-    cursor: pointer;
+    /* cursor: pointer; Removed row cursor */
     border-radius: 8px;
     font-size: var(--font-size-body);
     line-height: 1.6;
@@ -19,7 +19,8 @@
 }
 
 .row:hover {
-    background: var(--yellow-muted);
+    background: transparent;
+    /* Removed row hover */
 }
 
 .toggle {
@@ -35,13 +36,20 @@
     height: 22px;
     opacity: 1;
     flex-shrink: 0;
-
 }
 
 .key {
     color: var(--key-color);
     margin-right: 4px;
     flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0 2px;
+    transition: background 0.2s;
+}
+
+.key:hover {
+    background: var(--yellow-muted);
 }
 
 .bracket {
@@ -53,11 +61,18 @@
     margin-left: 4px;
     white-space: pre-wrap;
     word-break: break-all;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0 2px;
+    transition: background 0.2s;
+}
+
+.value:hover {
+    background: var(--yellow-muted);
 }
 
 .value.string {
     color: var(--string-color);
-
 }
 
 .value.number {
@@ -74,5 +89,3 @@
     opacity: 0.7;
     color: var(--null-color);
 }
-
-/* for null */

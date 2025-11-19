@@ -10,7 +10,7 @@ export default function CopyToast({ text }) {
     return (
         <div className={styles.copyToast}>
             <CheckCircle size={20} weight="fill" />
-            Copied: {text}
+            {text}
         </div>
     );
 }

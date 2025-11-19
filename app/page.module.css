@@ -4,7 +4,7 @@
   flex-direction: column;
   background: var(--bg-color);
   color: var(--text-color);
-  padding-top: 65px;
+  padding-top: 120px;
 }
 
 .mainContent {

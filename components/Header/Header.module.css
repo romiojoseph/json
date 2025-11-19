@@ -4,15 +4,23 @@
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 16px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
+    width: 100%;
+}
+
+.topRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .header h1 {

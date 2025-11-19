@@ -1,8 +1,9 @@
 .toolbar {
-    padding: 6px 16px 12px;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     gap: 8px;
+    width: 100%;
 }
 
 .btn {
