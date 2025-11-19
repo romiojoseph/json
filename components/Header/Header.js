@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './Header.module.css';
-import { MagnifyingGlass, FileArrowUp, ClipboardText } from '@phosphor-icons/react';
+import { MagnifyingGlass, UploadSimple, Copy } from '@phosphor-icons/react';
 import Toolbar from '../Toolbar/Toolbar';
 
 export default function Header({
@@ -26,7 +26,10 @@ export default function Header({
     return (
         <header className={styles.header}>
             <div className={styles.topRow}>
-                <img src="logo.svg" alt="Logo" className={styles.logo} />
+                <a href="/">
+                    <img src="logo.svg" alt="Logo" className={styles.logo} />
+                </a>
+
                 <div className={styles.headerActions}>
                     <div className={styles.searchBox}>
                         <input
@@ -40,11 +43,11 @@ export default function Header({
                         <MagnifyingGlass size={16} className={styles.searchIcon} />
                     </div>
                     <button className={styles.btn} onClick={onFileOpen}>
-                        <FileArrowUp size={16} weight="fill" />
+                        <UploadSimple size={16} weight="bold" />
                         <span>Open File</span>
                     </button>
                     <button className={styles.btn} onClick={onPasteClick}>
-                        <ClipboardText size={16} weight="fill" />
+                        <Copy size={16} weight="bold" />
                         <span>Paste</span>
                     </button>
                 </div>

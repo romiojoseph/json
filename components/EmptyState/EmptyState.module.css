@@ -3,13 +3,20 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 400px;
+    height: auto;
+    min-height: 300px;
+    padding: 40px 24px;
     color: var(--neutral-8);
     border: 2px dashed var(--neutral-13);
     background-color: var(--neutral-16);
     border-radius: 16px;
     margin: 24px;
     transition: all 0.2s;
+}
+
+.emptyState img {
+    width: 64px;
+    cursor: none;
 }
 
 .dragging {

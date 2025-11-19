@@ -281,7 +281,8 @@ export default function GraphViewer({ data }) {
                 .attr('class', 'link')
                 .attr('d', d3.linkHorizontal()
                     .x(d => d.y)
-                    .y(d => d.x));
+                    .y(d => d.x))
+                .attr('stroke-dasharray', '2,2');
 
             // Draw nodes
             const nodes = g.selectAll('.node')
@@ -358,6 +359,7 @@ export default function GraphViewer({ data }) {
                 .attr('fill', 'none')
                 .attr('stroke', '#d0d7de')
                 .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5')
                 .attr('opacity', 0)
                 .transition(t)
                 .attr('opacity', 0.6);

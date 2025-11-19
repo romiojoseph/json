@@ -8,6 +8,7 @@ import EmptyState from '../components/EmptyState/EmptyState';
 import Modal from '../components/Modal/Modal';
 import PasteModal from '../components/PasteModal/PasteModal';
 import CopyToast from '../components/CopyToast/CopyToast';
+import Footer from '../components/Footer/Footer';
 import styles from './page.module.css';
 import { Copy, DownloadSimple, X, MagnifyingGlassPlus } from '@phosphor-icons/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -231,6 +232,7 @@ export default function Home() {
 
       <main
         className={styles.mainContent}
+        style={jsonData ? { height: 'calc(100vh - 120px)' } : {}}
         onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
       >
         {jsonData ? (
@@ -303,6 +305,8 @@ export default function Home() {
         onClose={() => setIsPasteModalOpen(false)}
         onPaste={handlePasteJson}
       />
+
+      {!jsonData && <Footer />}
     </div>
   );
 }

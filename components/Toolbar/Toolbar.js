@@ -27,10 +27,10 @@ export default function Toolbar({
 
             <button className={styles.btn} onClick={onExpand} disabled={activeView !== 'tree'}><ArrowsOutSimple size={16} weight="duotone" /> Expand All</button>
             <button className={styles.btn} onClick={onCollapse} disabled={activeView !== 'tree'}><ArrowsInSimple size={16} weight="duotone" /> Collapse All</button>
-            <button className={styles.btn} onClick={onGetStructure}><TreeStructure size={16} weight="duotone" /> View Structure</button>
             <button className={styles.btn} onClick={onQuery}><MagnifyingGlassPlus size={16} weight="duotone" /> Query (JSONPath)</button>
             <button className={styles.btn} onClick={onExportCsv}><FileCsv size={16} weight="duotone" /> Export to CSV</button>
             <button className={styles.btn} onClick={onDownloadJson}><FileJs size={16} weight="duotone" /> Download JSON</button>
+            <button className={styles.btn} onClick={onGetStructure}><TreeStructure size={16} weight="duotone" /> View Structure</button>
             <button className={styles.btn} onClick={onDownloadSkeleton}><File size={16} weight="duotone" /> Download Skeleton</button>
         </div>
     );
