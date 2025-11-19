@@ -80,7 +80,7 @@
 }
 
 .disclaimer {
-    font-size: var(--font-size-caption);
+    font-size: var(--font-size-tagline);
     color: var(--neutral-6);
     margin: 0;
     text-align: left;

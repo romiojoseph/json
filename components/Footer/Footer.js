@@ -31,14 +31,14 @@ export default function Footer() {
                             <li>Keyboard shortcuts (Ctrl+F, Ctrl+O)</li>
                             <li>Completely works on your browser</li>
                             <li>No trackers, no ads and no account</li>
-                            <li>Built with LLMs, thus <a href="https://github.com/romiojoseph/json" target="_blank" rel="noopener">open source</a></li>
+                            <li>Built with LLMs, thus <a href="https://github.com/romiojoseph/json" target="_blank" rel="noopener">open source (Apache 2.0)</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div className={styles.bottom}>
                     <p className={styles.disclaimer}>
-                        Created with AI Studio, Deep Seek and Claude • {new Date().getFullYear()}
+                        Created with AI Studio, Deep Seek and Claude. Attribution required for reuse.
                     </p>
                 </div>
             </div>
