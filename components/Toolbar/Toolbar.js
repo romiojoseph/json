@@ -30,7 +30,7 @@ export default function Toolbar({
             <button className={styles.btn} onClick={onQuery}><MagnifyingGlassPlus size={16} weight="bold" /> Query</button>
             <button className={styles.btn} onClick={onExportCsv}><DownloadSimple size={16} weight="bold" /> CSV</button>
             <button className={styles.btn} onClick={onDownloadJson}><DownloadSimple size={16} weight="bold" /> JSON</button>
-            <button className={styles.btn} onClick={onGetStructure}><TreeStructure size={16} weight="bold" /> Structure</button>
+            <button className={styles.btn} onClick={onGetStructure}><TreeStructure size={16} weight="bold" /> Diagram</button>
             <button className={styles.btn} onClick={onDownloadSkeleton}><DownloadSimple size={16} weight="bold" />Skeleton</button>
         </div>
     );

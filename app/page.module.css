@@ -126,3 +126,24 @@
   margin-bottom: 8px;
   font-weight: 600;
 }
+
+
+@media (max-width: 768px) {
+  .appContainer {
+    padding-top: 160px;
+  }
+}
+
+
+@media (max-width: 540px) {
+  .appContainer {
+    padding-top: 197.71px;
+  }
+}
+
+
+@media (max-width: 491px) {
+  .appContainer {
+    padding-top: 231.71px;
+  }
+}

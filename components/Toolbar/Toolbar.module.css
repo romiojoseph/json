@@ -66,7 +66,7 @@
 @media (max-width: 960px) {
     .toolbar {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(109px, 1fr));
         gap: 8px;
     }
 
@@ -81,21 +81,17 @@
         height: 36px;
         min-height: 36px;
         padding: 2px;
-        /* Reduced padding */
         align-items: center;
     }
 
     .viewToggle .btn {
         height: 32px;
-        /* Slightly smaller than container */
         min-height: 32px;
         padding: 0 8px;
-        /* Reduced padding for mobile */
     }
 
     .viewToggle .btn.active {
         height: 32px;
-        /* Consistent height */
         min-height: 32px;
     }
 }
