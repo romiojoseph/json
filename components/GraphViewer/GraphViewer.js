@@ -21,10 +21,10 @@ function createNodeCard(node, d) {
     // Outer glow/shadow
     node.append('rect')
         .attr('class', 'graph-card-shadow')
-        .attr('width', cardWidth + 8)
-        .attr('height', cardHeight + 8)
-        .attr('x', -14)
-        .attr('y', -cardHeight / 2 - 4)
+        .attr('width', cardWidth + 4)
+        .attr('height', cardHeight + 4)
+        .attr('x', -12)
+        .attr('y', -cardHeight / 2 - 2)
         .attr('rx', 12);
 
     // Card background

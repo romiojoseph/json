@@ -6,11 +6,12 @@ import Header from '../components/Header/Header';
 import VirtualizedJsonViewer from '../components/VirtualizedJsonViewer/VirtualizedJsonViewer';
 import EmptyState from '../components/EmptyState/EmptyState';
 import Modal from '../components/Modal/Modal';
+import PasteModal from '../components/PasteModal/PasteModal';
 import CopyToast from '../components/CopyToast/CopyToast';
 import styles from './page.module.css';
 import { Copy, DownloadSimple, X, MagnifyingGlassPlus } from '@phosphor-icons/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { nightOwl } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
 import { json2csv } from 'json-2-csv';
 import dynamic from 'next/dynamic';
@@ -26,6 +27,7 @@ export default function Home() {
   const [copyCount, setCopyCount] = useState(0);
   const [isStructureModalOpen, setIsStructureModalOpen] = useState(false);
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
+  const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
   const [jsonPathQuery, setJsonPathQuery] = useState('$..*');
   const [queryResult, setQueryResult] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -65,6 +67,12 @@ export default function Home() {
     };
     reader.onerror = () => { setError('Failed to read file. Please try again.'); };
     reader.readAsText(file);
+  }, []);
+
+  const handlePasteJson = useCallback((json) => {
+    setJsonData(json);
+    setSearchTerm('');
+    setNodes(flattenJson(json, [], 0, ''));
   }, []);
 
   const handleDrop = useCallback((e) => {
@@ -198,6 +206,7 @@ export default function Home() {
           if (jsonData) setNodes(flattenJson(jsonData, [], 0, value));
         }}
         onFileOpen={() => fileInputRef.current?.click()}
+        onPasteClick={() => setIsPasteModalOpen(true)}
         searchInputRef={searchInputRef}
         hasData={!!jsonData}
         onExpand={expandAll}
@@ -237,7 +246,10 @@ export default function Home() {
             {activeView === 'graph' && <GraphViewer data={jsonData} />}
           </>
         ) : (
-          <EmptyState isDragging={isDragging} />
+          <EmptyState
+            isDragging={isDragging}
+            onPasteClick={() => setIsPasteModalOpen(true)}
+          />
         )}
       </main>
 
@@ -255,7 +267,7 @@ export default function Home() {
             <DownloadSimple size={16} /> Download
           </button>
         </div>
-        <SyntaxHighlighter language="json" style={atomDark} customStyle={{ margin: 0, borderRadius: '6px' }}>
+        <SyntaxHighlighter language="json" style={nightOwl} customStyle={{ margin: 0, borderRadius: '6px' }}>
           {skeletonJsonString}
         </SyntaxHighlighter>
       </Modal>
@@ -279,12 +291,18 @@ export default function Home() {
         {queryResult && (
           <div className={styles.resultsContainer}>
             <h3>Results:</h3>
-            <SyntaxHighlighter language="json" style={atomDark} customStyle={{ margin: 0, borderRadius: '6px' }}>
+            <SyntaxHighlighter language="json" style={nightOwl} customStyle={{ margin: 0, borderRadius: '6px' }}>
               {JSON.stringify(queryResult, null, 2)}
             </SyntaxHighlighter>
           </div>
         )}
       </Modal>
+
+      <PasteModal
+        isOpen={isPasteModalOpen}
+        onClose={() => setIsPasteModalOpen(false)}
+        onPaste={handlePasteJson}
+      />
     </div>
   );
 }

@@ -37,6 +37,17 @@ export const flattenJson = (json, path = [], depth = 0, searchTerm = '') => {
     let nodes = [];
     if (typeof json !== 'object' || json === null) return nodes;
 
+    // Helper function to recursively check if any descendant matches
+    const hasMatchInDescendants = (children) => {
+        return children.some(child => {
+            if (child.matchesSearch) return true;
+            if (child.children.length > 0) {
+                return hasMatchInDescendants(child.children);
+            }
+            return false;
+        });
+    };
+
     Object.keys(json).forEach(key => {
         const value = json[key];
         const newPath = [...path, key];
@@ -57,7 +68,7 @@ export const flattenJson = (json, path = [], depth = 0, searchTerm = '') => {
             children: isObject ? flattenJson(value, newPath, depth + 1, searchTerm) : [],
         };
 
-        const hasMatchingChildren = isObject && node.children.some(c => c.matchesSearch);
+        const hasMatchingChildren = isObject && hasMatchInDescendants(node.children);
         if (matchesSearch || hasMatchingChildren) {
             nodes.push(node);
         }

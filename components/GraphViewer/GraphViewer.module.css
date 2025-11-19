@@ -13,12 +13,12 @@
 }
 
 .container :global(.graph-card-shadow) {
-    fill: rgba(0, 0, 0, 0.05);
+    fill: var(--neutral-15)
 }
 
 .container :global(.graph-card-bg) {
     fill: var(--neutral-16);
-    stroke: var(--neutral-12);
+    stroke: var(--neutral-14);
     stroke-width: 1;
     transition: stroke 0.2s, stroke-width 0.2s;
 }
@@ -33,7 +33,7 @@
 }
 
 .container :global(.graph-card-line) {
-    stroke: var(--neutral-12);
+    stroke: var(--neutral-13);
     stroke-width: 1;
     opacity: 1;
 }

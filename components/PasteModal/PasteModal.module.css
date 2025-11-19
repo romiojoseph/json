@@ -1,0 +1,99 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 750px;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 300px;
+    max-height: 500px;
+    background: var(--neutral-16);
+    border: 2px solid var(--neutral-13);
+    border-radius: 16px;
+    padding: 24px;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    line-height: 1.8;
+    font-size: var(--font-size-body);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.textarea:hover {
+    border-color: var(--neutral-12);
+    background-color: var(--neutral-15);
+}
+
+.textarea:focus {
+    border-color: var(--orange-primary);
+    background-color: var(--neutral-16);
+}
+
+.error {
+    color: var(--red-primary);
+    font-size: var(--font-size-body);
+    padding: 8px 12px;
+    background: rgba(255, 59, 48, 0.1);
+    border-radius: 6px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.cancelBtn {
+    padding: 10px 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: var(--neutral-13);
+    color: var(--neutral-0);
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    gap: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.cancelBtn:hover {
+    background-color: var(--neutral-12);
+}
+
+.cancelBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.loadBtn {
+    padding: 10px 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--yellow-primary);
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    color: var(--neutral-0);
+    font-weight: 600;
+    gap: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.loadBtn:hover:not(:disabled) {
+    background: var(--orange-primary);
+}
+
+.loadBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

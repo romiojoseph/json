@@ -21,20 +21,19 @@
     align-items: center;
     gap: 6px;
     width: 100%;
+    transition: all 0.2s ease-in-out;
 }
 
 .btn:hover {
-    background: var(--row-hover-bg);
-    border-color: #1f6feb;
+    background: var(--neutral-12);
+    border-color: var(--neutral-11);
 }
-
-/* ... (keep all the previous styles) ... */
 
 .viewToggle {
     display: flex;
     gap: 4px;
-    border: 1px solid var(--neutral-13);
-    background-color: var(--neutral-15);
+    border: 1px solid var(--neutral-12);
+    background-color: var(--neutral-14);
     padding: 4px;
     border-radius: 100px;
 }
@@ -42,6 +41,11 @@
 .viewToggle .btn {
     border: none;
     background-color: transparent;
+}
+
+.viewToggle .btn:hover {
+    background: var(--neutral-12);
+    border-color: var(--neutral-11);
 }
 
 .viewToggle .btn.active {
